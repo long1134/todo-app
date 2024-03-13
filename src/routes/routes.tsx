@@ -32,7 +32,9 @@ const authRoutes = (): RouteObject => {
     path: "/",
     element: <PrivateRoute component={DefaultLayout} />,
     children: [
-      {
+      { path: "login", element: <Component component={lazy(() => import("@src/pagesNew/auth/Login"))} /> },
+      { path: "logout", element: <Component component={lazy(() => import("@src/pagesNew/auth/Logout"))} /> },
+      {      
         path: "auth",
         children: [
           { path: "login", element: <Component component={lazy(() => import("@src/pages/auth/Login"))} /> },
@@ -77,6 +79,7 @@ const otherRoutes = (): RouteObject => {
     path: "/",
     element: <PrivateRoute component={VerticalLayout} />,
     children: [
+      { path: "kanban", element: <Component component={lazy(() => import("@src/pagesNew/apps/Kanban"))} /> },
       { path: "ecommerce", element: <Component component={lazy(() => import("@src/pages/dashboard/ecommerce/"))} /> },
       { path: "analytics", element: <Component component={lazy(() => import("@src/pages/dashboard/Analytics"))} /> },
       { path: "error-404-alt", element: <Component component={lazy(() => import("@src/pages/error/Error404Alt"))} /> },
@@ -317,7 +320,7 @@ const otherRoutes = (): RouteObject => {
 
 const Routes = () => {
   return useRoutes([
-    { path: "/", element: <Navigate to="/ecommerce" /> },
+    { path: "/", element: <Navigate to="/kanban" /> },
     appsRoutes(),
     componentRoutes(),
     otherRoutes(),

@@ -1,8 +1,32 @@
+
 {
-  "printWidth": 120,
-  "tabWidth": 2,
-  "semi": true,
-  "bracketSpacing": true,
-  "arrowParens": "always",
-  "bracketSameLine": true
+  "arrowParens": "avoid",
+  "semi": false,
+  "tabWidth": 4,
+  "useTabs": true,
+  "printWidth": 100,
+  "trailingComma": "es5",
+  "overrides": [
+    {
+      "files": "*.md",
+      "options": {
+        "tabWidth": 1
+      }
+    },
+    {
+      "files": "*.json",
+      "options": {
+        "useTabs": false,
+        "tabWidth": 2
+      }
+    },
+    {
+      "files": ["*.yml", "*.yaml"],
+      "options": {
+        "useTabs": false,
+        "tabWidth": 2
+      }
+    }
+  ],
+  "prettier.cssEnable": ["css", "less", "sass"]
 }
