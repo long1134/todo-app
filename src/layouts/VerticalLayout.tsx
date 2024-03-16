@@ -4,9 +4,13 @@
  * Author: Coderthemes
  */
 
-import { Suspense, lazy } from "react";
-import { Outlet } from "react-router-dom";
-import { styled } from "@mui/material";
+import { Suspense, lazy, useEffect } from "react";
+import { Outlet, redirect, useNavigate } from "react-router-dom";
+import { CircularProgress, styled } from "@mui/material";
+import { useAuthContext } from "@src/states";
+import { useSelector, useDispatch } from 'react-redux'
+import { RootState } from "@src/app/store";
+import { setLoading } from "@src/app/feature/authSlice";
 
 const LeftSideBar = lazy(() => import("@src/layouts/LeftSideBar"));
 const RightSideBar = lazy(() => import("@src/layouts/RightSideBar"));
@@ -23,7 +27,19 @@ const ContentWrapper = styled("div")(({ theme }) => {
 })
 
 const VerticalLayout = () => {
-  return (
+  const navigate = useNavigate();
+  const {loading} = useSelector((state: RootState) => state.auth)
+  const isLogin =  localStorage.getItem("loginUser");
+
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    if(!isLogin) {
+      navigate("/login")
+    }
+    dispatch(setLoading(false))
+  },[isLogin])
+
+  return (loading? <CircularProgress /> : 
     <div style={{ display: "flex" }}>
       <Suspense fallback={<div />}>
         <LeftSideBar />

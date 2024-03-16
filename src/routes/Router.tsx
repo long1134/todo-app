@@ -10,7 +10,7 @@ import { Routes } from "@src/routes/routes";
 
 const Router = () => {
   return (
-    <BrowserRouter basename={"/attex_mui/"}>
+    <BrowserRouter basename={"/"}>
       <ScrollToTop />
       <Routes />
     </BrowserRouter>
