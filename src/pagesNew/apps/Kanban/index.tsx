@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import {
   Avatar,
@@ -31,9 +31,9 @@ import { assignees } from "./helper";
 import { useTabsChange } from "@src/hooks";
 
 import avatar4 from "@src/assets/images/users/avatar-4.jpg";
-import { useAuthContext } from "@src/states";
+
 import { staticAttachments } from "@src/pages/apps/tasks/Details/Attachments";
-import { useNavigate } from "react-router-dom";
+
 
 type TabPanelProps = {
   children?: ReactNode;
@@ -53,11 +53,7 @@ const CustomTabPanel = (props: TabPanelProps) => {
 
 const TaskDescription = ({ descriptionModal, toggleDescriptionModal }: TaskDescriptionProps) => {
   const { value, handleChange } = useTabsChange();
-  const navigate = useNavigate()
-  const { isAuthenticated } = useAuthContext();
-  useEffect(()=>{
-    if(!isAuthenticated)navigate("/login");
-  },[isAuthenticated])
+
   return (
     <Dialog open={descriptionModal} onClose={toggleDescriptionModal} maxWidth={"lg"} fullWidth>
       <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
