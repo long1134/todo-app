@@ -76,6 +76,11 @@ const UserProfile = () => {
       label: "Logout",
       link: "/auth/logout",
     },
+    {
+      icon: LuLogOut,
+      label: "Logout1999",
+      link: "/logout",
+    },
   ];
 
   return (
