@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles"
 import { autocompleteClasses } from "@mui/material/Autocomplete"
 import { Avatar, Box, Button, CircularProgress, TextField, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
-import { UserSearch, configureFakeBackend } from "@src/common/fake-backend"
+import { TUser, configureFakeBackend } from "@src/common/fake-backend"
 import axios from "axios"
 
 const Root = styled("div")(
@@ -151,7 +151,7 @@ const Listbox = styled("ul")(
 )
 
 type AutocompleteInviteUserProps = {
-	usersList: UserSearch[]
+	usersList: TUser[]
 	loading: boolean
 
 	setLoading: (value: React.SetStateAction<boolean>) => void
@@ -196,7 +196,7 @@ export const AutocompleteInviteUser: React.FC<AutocompleteInviteUserProps> = ({
 					ref={setAnchorEl}
 					className={focused ? "focused" : ""}
 				>
-					{value.map((option: FilmOptionType, index: number) => (
+					{value.map((option: TUser, index: number) => (
 						<StyledTag label={option.name} {...getTagProps({ index })} />
 					))}
 					<input placeholder="Email address or name" {...getInputProps()} />
@@ -241,7 +241,7 @@ export const AutocompleteInviteUser: React.FC<AutocompleteInviteUserProps> = ({
 					{(groupedOptions as typeof usersList).map((option, index) => (
 						<li style={{ width: "96%" }} {...getOptionProps({ option, index })}>
 							<Box sx={{ display: "flex", gap: 1 }}>
-								{option.imageSrc.length > 1 ? (
+								{option.imageSrc!.length > 1 ? (
 									<Avatar alt={option.name} src={option.imageSrc} />
 								) : (
 									<Avatar sx={{ color: "black" }}>{option.name[0]}</Avatar>
@@ -267,11 +267,4 @@ export const AutocompleteInviteUser: React.FC<AutocompleteInviteUserProps> = ({
 			)}
 		</Root>
 	)
-}
-
-interface FilmOptionType {
-	id: string
-	name: string
-	status: string
-	imageSrc: string
 }

@@ -12,7 +12,7 @@ import { Link } from "react-router-dom"
 import { AutocompleteInviteUser } from "./AutocompleteInviteUser"
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline"
 import { useEffect, useState } from "react"
-import { UserSearch, configureFakeBackend } from "@src/common/fake-backend"
+import { TUser, configureFakeBackend } from "@src/common/fake-backend"
 import axios from "axios"
 type InviteDialogProps = {
 	open: boolean
@@ -31,7 +31,7 @@ export const InviteDialog: React.FC<InviteDialogProps> = ({ open, handleClose })
 	const [isCopyLink, setIsCopyLink] = useState(true)
 	const [showStatus, setShowStatus] = useState(false)
 	const [loading, setLoading] = useState(true)
-	const [usersList, setUsersList] = useState<UserSearch[]>([])
+	const [usersList, setUsersList] = useState<TUser[]>([])
 	useEffect(() => {
 		configureFakeBackend()
 		fetchUserData()

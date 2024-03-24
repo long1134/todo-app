@@ -11,6 +11,7 @@ import { useSnackbar } from "notistack"
 import { useAppDispatch, useAppSelector } from "@src/app/hooks"
 import { RootState } from "@src/app/store"
 import { saveSession } from "@src/app/feature/authSlice"
+import { TUser } from "@src/common/fake-backend"
 
 const editUserFormSchema = yup.object({
 	name: yup.string().required("Please enter name"),
@@ -44,7 +45,10 @@ export default function useEditUser() {
 		setLoading(true)
 		try {
 			console.log(values)
-			const res: AxiosResponse<User> = await HttpClient.post("/login", values)
+			const res: AxiosResponse<TUser> = await HttpClient.post(
+				"/https://todo-app-production-c8ec.up.railway.app/auth/login",
+				values
+			)
 			if (res.data.token) {
 				dispatch(
 					saveSession({

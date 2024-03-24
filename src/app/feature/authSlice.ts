@@ -1,12 +1,12 @@
 import { unstable_gridTabIndexColumnHeaderFilterSelector } from "@mui/x-data-grid"
 import { createSlice } from "@reduxjs/toolkit"
 import type { PayloadAction } from "@reduxjs/toolkit"
-import { User } from "@src/types/auth"
+import { TUser } from "@src/common/fake-backend"
 
 export interface authState {
 	isAuthenticated: boolean
 	loading: boolean
-	user: User | undefined
+	user: TUser | undefined
 }
 
 const initialState: authState = {
@@ -19,7 +19,7 @@ export const authSlice = createSlice({
 	name: "auth",
 	initialState,
 	reducers: {
-		saveSession: (state, action: PayloadAction<User>) => {
+		saveSession: (state, action: PayloadAction<TUser>) => {
 			;(state.isAuthenticated = true), (state.loading = false)
 			const user = action.payload
 			state.user = user

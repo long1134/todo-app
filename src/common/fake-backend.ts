@@ -1,34 +1,60 @@
 import axios from "axios"
 import MockAdapter from "axios-mock-adapter"
 
-type UserData = {
-	id: number
-	username: string
+export type TUser = {
+	id?: string
+
 	email?: string
-	password: string
-	firstName: string
-	lastName: string
-	role: string
-	token: string
-}
-export type UserSearch = {
-	id: string
+	password?: string
 	name: string
-	imageSrc: string
-	status: string
+	role?: string
+	token?: string
+	imageSrc?: string
+	status?: string
 }
+
+const usersData: TUser[] = [
+	{
+		id: "1",
+		name: "Thinh",
+		status: "active",
+		imageSrc: "https://mui.com/static/images/avatar/1.jpg",
+	},
+	{
+		id: "2",
+		name: "Long",
+		status: "active",
+		imageSrc: "",
+	},
+	{
+		id: "3",
+		name: "SUPER",
+		status: " not active",
+		imageSrc: "https://mui.com/static/images/avatar/1.jpg",
+	},
+	{
+		id: "4",
+		name: "SUPER",
+		status: " not active",
+		imageSrc: "https://mui.com/static/images/avatar/1.jpg",
+	},
+	{
+		id: "5",
+		name: "SUPER",
+		status: " not active",
+		imageSrc: "https://mui.com/static/images/avatar/1.jpg",
+	},
+]
 
 const mock = new MockAdapter(axios)
 
 export function configureFakeBackend() {
-	const users: UserData[] = [
+	const users: TUser[] = [
 		{
-			id: 1,
+			id: "1",
 			email: "demo@demo.com",
-			username: "demo",
+			name: "demo",
 			password: "password",
-			firstName: "attex",
-			lastName: "coderthemes",
 			role: "Admin",
 			token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlcnRoZW1lcyIsImlhdCI6MTU4NzM1NjY0OSwiZXhwIjoxOTAyODg5NDQ5LCJhdWQiOiJjb2RlcnRoZW1lcy5jb20iLCJzdWIiOiJzdXBwb3J0QGNvZGVydGhlbWVzLmNvbSIsImxhc3ROYW1lIjoiVGVzdCIsIkVtYWlsIjoic3VwcG9ydEBjb2RlcnRoZW1lcy5jb20iLCJSb2xlIjoiQWRtaW4iLCJmaXJzdE5hbWUiOiJIeXBlciJ9.P27f7JNBF-vOaJFpkn-upfEh3zSprYfyhTOYhijykdI",
 		},
@@ -63,13 +89,12 @@ export function configureFakeBackend() {
 				const params = JSON.parse(config.data)
 
 				// add new users
-				const [firstName, lastName] = params.fullname.split(" ")
-				const newUser: UserData = {
-					id: users.length + 1,
-					username: firstName,
+				const [name] = params.name.split(" ")
+				const newUser: TUser = {
+					id: users.length + 1 + "",
+					name: name,
 					password: params.password,
-					firstName: firstName,
-					lastName: lastName,
+
 					role: "Admin",
 					token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjb2RlcnRoZW1lcyIsImlhdCI6MTU4NzM1NjY0OSwiZXhwIjoxOTAyODg5NDQ5LCJhdWQiOiJjb2RlcnRoZW1lcy5jb20iLCJzdWIiOiJzdXBwb3J0QGNvZGVydGhlbWVzLmNvbSIsImxhc3ROYW1lIjoiVGVzdCIsIkVtYWlsIjoic3VwcG9ydEBjb2RlcnRoZW1lcy5jb20iLCJSb2xlIjoiQWRtaW4iLCJmaXJzdE5hbWUiOiJIeXBlciJ9.P27f7JNBF-vOaJFpkn-upfEh3zSprYfyhTOYhijykdI",
 				}
@@ -88,7 +113,7 @@ export function configureFakeBackend() {
 
 				// find if any user matches login credentials
 				const filteredUsers = users.filter(user => {
-					return user.username === params.username
+					return user.name === params.name
 				})
 
 				if (filteredUsers.length) {
@@ -111,39 +136,6 @@ export function configureFakeBackend() {
 			}, 1000)
 		})
 	})
-	// get All Users
-	const usersData: UserSearch[] = [
-		{
-			id: "1",
-			name: "Thinh",
-			status: "active",
-			imageSrc: "https://mui.com/static/images/avatar/1.jpg",
-		},
-		{
-			id: "2",
-			name: "Long",
-			status: "active",
-			imageSrc: "",
-		},
-		{
-			id: "3",
-			name: "SUPER",
-			status: " not active",
-			imageSrc: "https://mui.com/static/images/avatar/1.jpg",
-		},
-		{
-			id: "4",
-			name: "SUPER",
-			status: " not active",
-			imageSrc: "https://mui.com/static/images/avatar/1.jpg",
-		},
-		{
-			id: "5",
-			name: "SUPER",
-			status: " not active",
-			imageSrc: "https://mui.com/static/images/avatar/1.jpg",
-		},
-	]
 
 	mock.onGet("/allUsers").reply(200, usersData)
 }

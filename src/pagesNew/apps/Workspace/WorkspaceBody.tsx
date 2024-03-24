@@ -11,10 +11,9 @@ import {
 	Tooltip,
 	Typography,
 } from "@mui/material"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { LuSearch } from "react-icons/lu"
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline"
-import { relative } from "path"
 import { ActiveBacground, BoardCreateTooltip } from "./BoardCreateTooltip"
 import { Link } from "react-router-dom"
 export type BoardType = {
@@ -22,6 +21,24 @@ export type BoardType = {
 	backgroundImage: string
 	visibility: string
 }
+export const OPTIONS_LIST = [
+	{
+		label: "Most recently active",
+		value: 0,
+	},
+	{
+		label: "Least recently active",
+		value: 1,
+	},
+	{
+		label: "Alphabetically A-Z",
+		value: 2,
+	},
+	{
+		label: "Alphabetically Z-A",
+		value: 3,
+	},
+]
 export const WorkspaceBody = () => {
 	const [open, setOpen] = useState(false)
 
@@ -33,7 +50,7 @@ export const WorkspaceBody = () => {
 		setOpen(true)
 	}
 	const [boardList, setBoardList] = useState<BoardType[]>([])
-
+	const stateRemaning = useMemo(() => 10 - boardList.length, [boardList])
 	return (
 		<Box sx={{ m: 5 }}>
 			<Typography sx={{ fontSize: "1.2rem" }} variant="h1">
@@ -50,12 +67,13 @@ export const WorkspaceBody = () => {
 							SelectDisplayProps={{ style: { paddingTop: 10, paddingBottom: 8 } }}
 							labelId="sort-by"
 							label="sort by"
-							value={40}
+							value={0}
 						>
-							<MenuItem value={40}>Most recently active</MenuItem>
-							<MenuItem value={10}>Ten</MenuItem>
-							<MenuItem value={20}>Twenty</MenuItem>
-							<MenuItem value={30}>Thirty</MenuItem>
+							{OPTIONS_LIST.map((item, index) => (
+								<MenuItem key={index} value={item.value}>
+									{item.label}
+								</MenuItem>
+							))}
 						</Select>
 					</Box>
 					<Box>
@@ -67,12 +85,13 @@ export const WorkspaceBody = () => {
 							SelectDisplayProps={{ style: { paddingTop: 10, paddingBottom: 8 } }}
 							labelId="filter-by"
 							label="filterby"
-							value={40}
+							value={0}
 						>
-							<MenuItem value={40}>Most recently active</MenuItem>
-							<MenuItem value={10}>Ten</MenuItem>
-							<MenuItem value={20}>Twenty</MenuItem>
-							<MenuItem value={30}>Thirty</MenuItem>
+							{OPTIONS_LIST.map((item, index) => (
+								<MenuItem key={index} value={item.value}>
+									{item.label}
+								</MenuItem>
+							))}
 						</Select>
 					</Box>
 				</Box>
@@ -144,10 +163,27 @@ export const WorkspaceBody = () => {
 									onClick={handleTooltipOpen}
 								>
 									<Box>
-										<Typography>Create new board</Typography>
-										<Typography sx={{ textAlign: "center", mt: 1 }}>
-											6 remaining
+										<Typography>
+											{stateRemaning === 0
+												? "0 board remaining"
+												: "Create new board"}
 										</Typography>
+										{stateRemaning === 0 ? (
+											<Typography
+												sx={{
+													textAlign: "center",
+													mt: 1,
+													textDecoration: "underline",
+												}}
+											>
+												Get unlimited boards
+											</Typography>
+										) : (
+											<Typography sx={{ textAlign: "center", mt: 1 }}>
+												{stateRemaning} remaining
+											</Typography>
+										)}
+
 										<Tooltip
 											componentsProps={{
 												tooltip: {
@@ -190,8 +226,8 @@ export const WorkspaceBody = () => {
 						</Box>
 					</ClickAwayListener>
 				</Box>
-				{boardList.map(board => (
-					<Link to="">
+				{boardList.map((board, index) => (
+					<Link key={index} to="">
 						<Box
 							sx={{
 								p: 0,

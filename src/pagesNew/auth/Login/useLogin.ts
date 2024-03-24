@@ -1,16 +1,17 @@
 import { useMemo, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
-import { AxiosResponse } from "axios"
+import axios, { Axios, AxiosResponse } from "axios"
 import { useForm } from "react-hook-form"
-import { HttpClient } from "@src/helpers"
 
 import { yupResolver } from "@hookform/resolvers/yup"
-import type { User } from "@src/types"
+
 import * as yup from "yup"
 import { useSnackbar } from "notistack"
 import { useAppDispatch, useAppSelector } from "@src/app/hooks"
 import { RootState } from "@src/app/store"
 import { saveSession } from "@src/app/feature/authSlice"
+import { TUser } from "@src/common/fake-backend"
+import { HttpClient } from "@src/helpers"
 
 const loginFormSchema = yup.object({
 	email: yup.string().email("Please enter valid email").required("Please enter email"),
@@ -30,8 +31,8 @@ export default function useLogin() {
 	const { control, handleSubmit } = useForm({
 		resolver: yupResolver(loginFormSchema),
 		defaultValues: {
-			email: "demo@demo.com",
-			password: "password",
+			email: "long3@gmail.com",
+			password: "longvip113",
 		},
 	})
 
@@ -42,19 +43,29 @@ export default function useLogin() {
 	const login = handleSubmit(async (values: LoginFormFields) => {
 		setLoading(true)
 		try {
-			console.log(values)
-			const res: AxiosResponse<User> = await HttpClient.post("/login", values)
-			if (res.data.token) {
+			const response = await fetch(
+				"https://todo-app-production-c8ec.up.railway.app/auth/login",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(values),
+				}
+			)
+			const data = await response.json()
+			if (data) {
 				dispatch(
 					saveSession({
-						...(res.data ?? {}),
-						token: res.data.token,
+						...(data ?? {}),
+						token: data.access_token,
 					})
 				)
 
 				navigate(redirectUrl)
 			}
 		} catch (error: any) {
+			console.log(error)
 			if (error.response?.data?.error) {
 				enqueueSnackbar(error.response?.data?.error, { variant: "error" })
 			}
